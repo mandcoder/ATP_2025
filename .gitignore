@@ -1,0 +1,14 @@
+# Miljövariabler och hemligheter
+
+.env
+ingestion/.dlt/secrets.toml
+dashboard/.streamlit/secrets.toml
+
+#dbt
+transform/target/
+transform/dbt_packages/
+transform/logs/
+
+# Dagster
+.dagster/
+.tmp_dagster_home_*/
