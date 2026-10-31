@@ -1,0 +1,17 @@
+# Profilnamnet måste matcha "profile:" i dbt_project.yml
+transform:
+  # Vilken target som används om inget anges med --target
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      # Alla uppgifter läses från miljövariabler, inget hemligt i filen
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+      schema: dbt_dev
+      # Antal modeller som byggs parallellt
+      threads: 4

@@ -7,7 +7,7 @@ dashboard/.streamlit/secrets.toml
 #dbt
 transform/target/
 transform/dbt_packages/
-transform/logs/
+logs/
 
 # Dagster
 .dagster/
