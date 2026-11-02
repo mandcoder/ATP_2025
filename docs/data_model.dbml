@@ -24,7 +24,7 @@ Table fct_stats {
   break_points_saved integer
   break_points_won integer
   double_faults integer
-  fastest_serve_in integer
+  fastest_serve integer
   first_serves_in integer // antal första servar som gick in
   first_serve_total integer // totalt antal första servar i matchen
   winning_on_first_serve integer // antal poäng som har vunnits av första serven
@@ -33,8 +33,8 @@ Table fct_stats {
   total_points_won integer
   unforced_errors integer
   winners integer
-  winning_on_second_serve integer
-  second_serve_in integer
+  winning_on_second_serve integer 
+  second_serve_in integer // antal andra server som gick in, som inte är dubbel fel
   is_winner bool
   indexes { (match_id, player_id) [pk]} //composite key
 }
