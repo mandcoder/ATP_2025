@@ -16,6 +16,9 @@ Table fct_matches {
 Table fct_stats {
   match_id integer [not null]
   player_id integer [not null]
+  tournament_id integer [not null]
+  date_id integer [not null]
+  round_id integer [not null]
   aces integer
   average_first_serve_speed integer
   average_second_serve_speed integer
@@ -67,7 +70,6 @@ Table dim_date {
   day_number integer // ISO: 1 = monday, 7 = sunday
   day_name varchar
 }
-
 ref: fct_matches.tournament_id > dim_tournament.tournament_id
 ref: fct_matches.date_id > dim_date.date_id
 ref: fct_matches.winner_id > dim_players.player_id
@@ -75,3 +77,6 @@ ref: fct_matches.loser_id > dim_players.player_id
 ref: fct_matches.round_id > dim_round.round_id
 ref: fct_stats.match_id > fct_matches.match_id
 ref: fct_stats.player_id > dim_players.player_id
+ref: fct_stats.tournament_id > dim_tournament.tournament_id
+ref: fct_stats.date_id > dim_date.date_id
+ref: fct_stats.round_id > dim_round.round_id
