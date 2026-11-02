@@ -53,13 +53,19 @@ Table dim_tournament {
 
 }
 Table dim_round {
-  round_id integer [pk]
+  round_id integer [pk, not null] // alla tuneringar har 7 rundor (4,5,6,7,9,10,12) sorterar i rund ordning
   round_name varchar
-  round_order integer // för att kunna filtrera ordnigen men Final överst etc
 }
+
 Table dim_date {
-  date_id integer [pk] 
-  match_date date // svarar på frågan när
+  date_id integer [pk, not null] // YYYYMMDD
+  full_date date // svarar på frågan när
+  year integer
+  month integer
+  month_name varchar
+  week_number integer // iso_week
+  day_number integer // ISO: 1 = monday, 7 = sunday
+  day_name varchar
 }
 
 ref: fct_matches.tournament_id > dim_tournament.tournament_id
