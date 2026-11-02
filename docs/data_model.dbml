@@ -1,0 +1,71 @@
+// grain: 1 rad per match
+Table fct_matches {
+  match_id integer [pk, not null] 
+  tournament_id integer [not null]
+  date_id integer [not null]
+  winner_id integer [not null]
+  loser_id integer [not null]
+  round_id integer [not null]
+  result varchar
+  winner_sets integer
+  winner_games integer
+  loser_sets integer
+  loser_games integer
+  is_retired bool
+}
+Table fct_stats {
+  match_id integer [not null]
+  player_id integer [not null]
+  aces integer
+  average_first_serve_speed integer
+  average_second_serve_speed integer
+  break_points_chance integer
+  break_points_faced integer
+  break_points_saved integer
+  break_points_won integer
+  double_faults integer
+  fastest_serve_in integer
+  first_serves_in integer // antal första servar som gick in
+  first_serve_total integer // totalt antal första servar i matchen
+  winning_on_first_serve integer // antal poäng som har vunnits av första serven
+  net_approaches integer
+  net_approaches_of integer
+  total_points_won integer
+  unforced_errors integer
+  winners integer
+  winning_on_second_serve integer
+  second_serve_in integer
+  is_winner bool
+  indexes { (match_id, player_id) [pk]} //composite key
+}
+Table dim_players {
+  player_id integer [pk, not null]
+  player_name varchar
+  player_country varchar
+}
+// nedan hämtas från tournament_info tabellen
+Table dim_tournament {
+  tournament_id integer [pk, not null]
+  tournament_name varchar // svarar på frågan vad
+  country varchar          // svarar på frågan var
+  court_surface varchar 
+  tournament_type varchar
+
+}
+Table dim_round {
+  round_id integer [pk]
+  round_name varchar
+  round_order integer // för att kunna filtrera ordnigen men Final överst etc
+}
+Table dim_date {
+  date_id integer [pk] 
+  match_date date // svarar på frågan när
+}
+
+ref: fct_matches.tournament_id > dim_tournament.tournament_id
+ref: fct_matches.date_id > dim_date.date_id
+ref: fct_matches.winner_id > dim_players.player_id
+ref: fct_matches.loser_id > dim_players.player_id
+ref: fct_matches.round_id > dim_round.round_id
+ref: fct_stats.match_id > fct_matches.match_id
+ref: fct_stats.player_id > dim_players.player_id
