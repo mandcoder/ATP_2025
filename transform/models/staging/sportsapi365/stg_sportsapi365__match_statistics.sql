@@ -26,7 +26,7 @@ with match_statistics as (
         PLAYER1_STATS__WINNERS                          as player1_winners,
         PLAYER1_STATS__WINNING_ON_FIRST_SERVE           as player1_winning_on_first_serve,
         PLAYER1_STATS__WINNING_ON_SECOND_SERVE          as player1_winning_on_second_serve,
-        PLAYER1_STATS__WINNING_ON_SECOND_SERVE_OF       as player1_second_serv_total,
+        PLAYER1_STATS__WINNING_ON_SECOND_SERVE_OF       as player1_second_serves_in,
 
         --player2 statistic
 
@@ -49,7 +49,7 @@ with match_statistics as (
         PLAYER2_STATS__WINNERS                          as player2_winners,
         PLAYER2_STATS__WINNING_ON_FIRST_SERVE           as player2_winning_on_first_serve,
         PLAYER2_STATS__WINNING_ON_SECOND_SERVE          as player2_winning_on_second_serve,
-        PLAYER2_STATS__WINNING_ON_SECOND_SERVE_OF       as player2_second_serv_total,
+        PLAYER2_STATS__WINNING_ON_SECOND_SERVE_OF       as player2_second_serv_in,
 
     from match_statistics
 
