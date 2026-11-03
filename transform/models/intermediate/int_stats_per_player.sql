@@ -13,7 +13,7 @@ select
     player1_aces                        as aces,
     player1_average_first_serve_speed   as average_first_serve_speed,  
     player1_average_second_serve_speed  as average_second_serve_speed,
-    player1_break_point_chance          as break_points_chance,
+    player1_break_points_chance         as break_points_chance,
     player1_break_points_saved          as break_points_saved,
     player1_break_points_faced          as break_points_faced,
     player1_break_points_won            as break_points_won,
@@ -32,15 +32,6 @@ select
 
 
 
-
-
-
-
-
-
-
-
-
 from stats
 
 union all
@@ -48,8 +39,25 @@ union all
 -- player2:s rad i samma ordning
 select
     match_id,
-    player2_id                      as player_id,
-    player2_aces                    as aces,
-    player2_winners                 as winners
+    player2_id                          as player_id,
+    player2_aces                        as aces,
+    player2_average_first_serve_speed   as average_first_serve_speed,  
+    player2_average_second_serve_speed  as average_second_serve_speed,
+    player2_break_points_chance         as break_points_chance,
+    player2_break_points_saved          as break_points_saved,
+    player2_break_points_faced          as break_points_faced,
+    player2_break_points_won            as break_points_won,
+    player2_double_faults               as double_faults,
+    player2_fastest_serve               as fastest_serve,
+    player2_first_serve_in              as first_serves_in,
+    player2_first_serve_total           as first_serves_total,
+    player2_net_approaches_won          as net_approaches_won,
+    player2_net_approaches_total        as net_approaches_total,
+    player2_total_points_won            as total_points_won,
+    player2_unforced_errors             as unforced_errors,
+    player2_winners                     as winners,
+    player2_winning_on_first_serve      as first_serves_won,
+    player2_winning_on_second_serve     as second_serves_won,
+    player2_second_serves_in            as second_serves_in,
 from stats
     
