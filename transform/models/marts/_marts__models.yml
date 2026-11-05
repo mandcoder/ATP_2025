@@ -1,0 +1,140 @@
+
+models:
+  - name: fct_matches         # modellens namn, samma som filnamnet
+    columns:
+      - name: match_id        # primär nyckel
+        data_tests:
+          - unique            # inga dubletter 
+          - not_null          # inga tomma värden
+
+      - name: round_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_round')
+                field: round_id
+
+      - name: winner_id       # främande nyckel mot dim_players
+        data_tests:
+          - not_null
+          - relationships:    # varje winner_id ska finnas i dim_players
+              arguments:
+                to: ref('dim_players')    # tabellen som värdena skall finnas i
+                field: player_id          # kolumnen(dim_players) som i tabellen som de jämförs mot
+      - name: result_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['completed', 'retired', 'walkover']
+
+      - name: tournament_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_tournament')
+                field: tournament_id
+
+      - name: date_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_id
+      
+      - name: loser_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_players')
+                field: player_id
+  
+  - name: fct_stats
+    data_tests:
+      - dbt_utils.unique_combination_of_columns: # kolumnerna som skall vara unika
+          arguments:
+            combination_of_columns:
+              - match_id
+              - player_id
+
+    columns:
+      - name: match_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_matches')
+                field: match_id
+      
+      - name: player_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_players')
+                field: player_id
+      
+      - name: tournament_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_tournament')
+                field: tournament_id
+      
+      - name: date_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_id
+
+      - name: round_id      # namnet på kolumnen i fct_stats
+        data_tests:
+          - not_null        # testar att det inte finns null
+          - relationships:  # testar kopplingen mot dim_round 
+              arguments:
+                to: ref('dim_round') # här skriver man tabellen som kopplingen är till
+                field: round_id      # här skriver man vilken kolumn som kopplingen pekar mot
+  
+  - name: dim_players
+    columns:
+      - name: player_id
+        data_tests:
+          - not_null
+          - unique
+  
+  - name: dim_tournament
+    columns:
+      - name: tournament_id
+        data_tests:
+          - not_null
+          - unique
+  
+  - name: dim_round
+    columns:
+      - name: round_id
+        data_tests:
+          - not_null
+          - unique
+  
+  - name: dim_date
+    columns:
+      - name: date_id
+        data_tests:
+          - not_null
+          - unique
+          
+
+
+
+
+
+
+
+ 
+
