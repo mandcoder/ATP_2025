@@ -12,7 +12,7 @@ select
     s.match_id                      as match_id,
     s.player_id                     as player_id,
     m.tournament_id                 as tournament_id,
-    m.date_id                       as data_id,
+    m.date_id                       as date_id,
     m.round_id                      as round_id,
     s.aces                          as aces,
     s.average_first_serve_speed     as average_first_serve_speed,
