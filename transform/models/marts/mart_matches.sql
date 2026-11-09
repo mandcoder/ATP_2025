@@ -41,7 +41,7 @@ final as (
 
         -- tournament
         tournaments.tournament_name,
-        tournaments.country,
+        tournaments.country             as tournament_country,
         tournaments.surface,
         tournaments.tournament_type,
         tournaments.city,
@@ -54,6 +54,10 @@ final as (
         match_winner.player_country as match_winner_country,
         match_loser.player_name as match_loser_name,
         match_loser.player_country as match_loser_country,
+
+        match_winner.player_name || ' vs ' || match_loser.player_name as match_label,
+
+        
 
         -- winner statistics
         winner_stats.aces                                   as winner_aces,
