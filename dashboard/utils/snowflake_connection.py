@@ -47,3 +47,16 @@ def load_player_stats() -> pd.DataFrame:
     # Snowflake returns uppercase column-name, they will be converted to lowercase
     df.columns = df.columns.str.lower()
     return df
+
+
+def load_long_table_match_stats() -> pd.DataFrame:
+    "return a long table match-stat"
+
+    sql = (QUERIES_DIR / "long_match_and_stats.sql").read_text(encoding="utf-8")
+
+    conn = st.connection("snowflake")
+    df = conn.query(sql, ttl=CASHE_SECONDS)
+
+    df.columns = df.columns.str.lower()
+
+    return df
