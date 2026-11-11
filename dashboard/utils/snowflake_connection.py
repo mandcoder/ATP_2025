@@ -10,7 +10,7 @@ import streamlit as st
 QUERIES_DIR = Path(__file__).resolve().parents[1] / "queries"
 
 # Cache results for 10 minutes so every filter click does not hit Snowflake
-CASHE_SECONDS = 600
+CACHE_SECONDS = 600
 
 
 def load_match_and_stats() -> pd.DataFrame:
@@ -24,7 +24,7 @@ def load_match_and_stats() -> pd.DataFrame:
     # st.connection reads [connections.snowflake] from .streamlit/secrets.toml
 
     conn = st.connection("snowflake")
-    df = conn.query(sql, ttl=CASHE_SECONDS)
+    df = conn.query(sql, ttl=CACHE_SECONDS)
 
     # Snowflake returns uppercase columna name, therefore they will be convert to lowercase
     df.columns = df.columns.str.lower()
@@ -42,7 +42,7 @@ def load_player_stats() -> pd.DataFrame:
     # st.connection reads [connection.snowflake] from .streamlit/secrets.toml
 
     conn = st.connection("snowflake")
-    df = conn.query(sql, ttl=CASHE_SECONDS)
+    df = conn.query(sql, ttl=CACHE_SECONDS)
 
     # Snowflake returns uppercase column-name, they will be converted to lowercase
     df.columns = df.columns.str.lower()
@@ -55,7 +55,7 @@ def load_long_table_match_stats() -> pd.DataFrame:
     sql = (QUERIES_DIR / "long_match_and_stats.sql").read_text(encoding="utf-8")
 
     conn = st.connection("snowflake")
-    df = conn.query(sql, ttl=CASHE_SECONDS)
+    df = conn.query(sql, ttl=CACHE_SECONDS)
 
     df.columns = df.columns.str.lower()
 
