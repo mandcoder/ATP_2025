@@ -1,24 +1,38 @@
 import streamlit as st
 
 from utils.filters import match_filters
-from utils.path_helpers import PICT_PATH
 from utils.snowflake_connection import load_match_and_stats, load_long_table_match_stats
-from utils.match_stats_chart_2 import match_stats_chart
+from utils.match_stats_chart_grouped import match_stats_chart
 
 
 st.set_page_config(layout="wide")
+
+
+st.html(
+    """
+<style>
+.st-key-match_stats_chart {
+    background-color: #191612;  /* ytans färg */
+    border-radius: 16px;        /* rundade hörn */
+    padding: 1.25rem 1.5rem;    /* luft runt diagrammet */
+}
+</style>
+"""
+)
 
 # data, hämtar allt och avgränsar till den här sidanstuneringstyp
 long_match_stat_df = load_long_table_match_stats()
 df = load_match_and_stats()
 df_grandslam = df[df["tournament_type"] == "Grand Slam"]
 
-# picture
-left, middle, right = st.columns([1, 6, 1])
+
+left, middle, right = st.columns([1, 3, 1])
+
 
 with middle:
-    # det som är unikt för denna sidan, dvs bilden i detta fallet
-    st.image(PICT_PATH / "grand_slam.png", width="stretch")
+
+    st.title("Grand Slam tournaments")
+    st.markdown("Select tournament and match, to view player statisics")
 
     # filter
     selected_match = match_filters(df_grandslam)
@@ -28,4 +42,17 @@ with middle:
     ].sort_values("sort_order")
 
     fig = match_stats_chart(long_m_stat_df, selected_match)
-    st.plotly_chart(fig, width="stretch")
+    with st.container(key="match_stats_chart"):
+        # Resultatet och vinnaren centrerade över diagrammet.
+        # st.html tolkar strängen som HTML direkt, indragningen spelar ingen roll
+        st.html(
+            f"""
+            <p style='text-align:center; font-size:1.7rem; margin:0;'>
+                {selected_match['result']}
+            </p>
+            <p style='text-align:center; font-size:1.4rem; color:#2f6fd1; margin:0;'>
+                {selected_match['match_winner_name']}
+            </p>
+            """
+        )
+        st.plotly_chart(fig, width="stretch")
