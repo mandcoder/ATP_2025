@@ -1,13 +1,17 @@
 import streamlit as st
 
-from utils.snowflake_connection import load_matches, load_stat_comparisons
-from utils.match_stats_chart_butterfly import match_stats_chart
+from utils.constants import STYLING_PATH
+from utils.match_summary_card import build_match_summary_html
+from utils.snowflake_connection import load_matches
+
+
+# Sidans egen stil: bakgrund och kortet. Laddas först så att allt nedan får den.
+st.html(STYLING_PATH / "match_stats.css")
 
 if st.button("Back"):
     st.switch_page("pages/tournaments.py")
 
 # ingen match vald: visa felmeddelande och stoppa här
-
 match_id_text = st.query_params.get("match_id") or st.session_state.get("match_id")
 
 if match_id_text is None:
@@ -15,7 +19,6 @@ if match_id_text is None:
     st.stop()
 
 # Lägg tillbaka id:t i adressen, så att en omladdning också fungerar
-
 st.query_params["match_id"] = match_id_text
 
 # Gör om från text till tal så det matchar tabellen
@@ -31,28 +34,5 @@ if not is_selected_match.any():
     st.stop()
 selected_match = matches[is_selected_match].iloc[0]
 
-# Alla jämförelser, en rad per statistik per match
-stat_comparisons = load_stat_comparisons()
-
-# True på raderna som hör till vald match
-is_selected = stat_comparisons["match_id"] == match_id
-
-# Jämförelserna är vald match, i den ordning som diagrammet ska visa dem
-selected_comparision = stat_comparisons[is_selected].sort_values("sort_order")
-
-
-# Resultatet och vinnaren, centrerade
-
-st.html(
-    f"""
-    <p style='text-align:center; font-size:1.7rem; margin:0;'>
-        {selected_match['result']}
-    </p>
-    <p style='text-align:center; font-size:1.4rem; color:#2f6fd1; margin:0;'>
-        {selected_match['match_winner_name']}
-    </p>
-    """
-)
-
-# match_stats_chart(selected_comparision, is_selected)
-st.dataframe(selected_comparision)
+# Matchkortet: huvud och statistik, allt från matchraden
+st.html(build_match_summary_html(selected_match))
