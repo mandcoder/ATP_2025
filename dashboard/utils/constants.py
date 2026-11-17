@@ -13,5 +13,4 @@ BASE_PATH = Path(__file__).parents[1]
 
 STYLING_PATH = BASE_PATH / "styling"
 
-print(STYLING_PATH)
-print(BASE_PATH)
+CONTENT_PATH = BASE_PATH / "content"
