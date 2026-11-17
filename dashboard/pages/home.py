@@ -2,14 +2,19 @@ import streamlit as st
 
 from utils.snowflake_connection import load_matches
 from utils.snowflake_connection import load_yearly_player_stat
-from utils.constants import STYLING_PATH
-from utils.leader_board_aces import build_leaderboard_html
+from utils.constants import STYLING_PATH, CONTENT_PATH
+from utils.leaderboard_card import build_leaderboard_html
+from utils.snowflake_connection import load_player_ranking_2025
 
 st.set_page_config(layout="wide")  # denna måste ligga först
 
 
 # Sidans egen stil: bakgrund och kortet. Laddas först så att allt nedan får den.
 st.html(STYLING_PATH / "home_page.css")
+
+# Inledande text på startsidan
+# Inledningstexten, ett stycke per post
+SEASON_SUMMARY = (CONTENT_PATH / "season_summary.md").read_text(encoding="utf-8")
 
 st.markdown(
     """
@@ -38,7 +43,8 @@ left, middle, right = st.columns([1, 6, 1])
 df = load_matches()
 yearly_player_stat = load_yearly_player_stat()
 
-top_10_player_aces = yearly_player_stat
+ranking_2025 = load_player_ranking_2025()
+
 
 total_players = len(yearly_player_stat)
 total_matches = len(df)
@@ -51,8 +57,6 @@ total_tournaments = df["tournament_name"].nunique()
 with middle:
 
     with st.container(border=True):
-
-        # st.image(PICT_PATH / "ATP_main_page.png", width="stretch")
 
         kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
 
@@ -71,9 +75,34 @@ with middle:
         with kpi5:
             st.metric(label="Countries", value=total_countries)
 
-    _, table_column = st.columns([2, 1])
+    # delar ytan under KPI-korten: texten till vänster, topplistan till höger
+    text_column, table_column = st.columns([2, 1], gap="large")
 
-    with table_column:
+    with text_column:
+
+        # Container med key för att kunna styla texten i CSS
+        with st.container(key="season_summary"):
+            st.markdown(SEASON_SUMMARY)
+
+    with table_column, st.container(key="leaderboards"):
 
         top_aces = yearly_player_stat.sort_values("total_aces", ascending=False).head(5)
         st.html(build_leaderboard_html(top_aces, "Most aces", "total_aces"))
+
+        top_wins = yearly_player_stat.sort_values("matches_won", ascending=False).head(
+            5
+        )
+        st.html(
+            build_leaderboard_html(
+                top_wins, "Most wins", "matches_won", "matches_played"
+            )
+        )
+        # Ritar årsslutsrankingen 2025 med placering från datan
+        st.html(
+            build_leaderboard_html(
+                ranking_2025,
+                "ATP Ranking 2025",
+                "ranking_points",
+                rank_column="ranking_position",
+            )
+        )
