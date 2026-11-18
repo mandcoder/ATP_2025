@@ -20,6 +20,7 @@ select
     s.break_points_chance           as break_points_chance,
     s.break_points_saved            as break_points_saved,
     s.break_points_faced            as break_points_faced,
+    s.break_points_won              as break_points_won,
     s.double_faults                 as double_faults,
     s.fastest_serve                 as fastest_serve,
     s.first_serves_in               as first_serves_in,
