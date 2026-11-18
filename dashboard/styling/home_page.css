@@ -1,0 +1,79 @@
+/* Stil för startsidan. Laddas bara på den sidan. */
+
+/* Textstorlek och radavstånd för inledningstexten */
+.st-key-season_summary p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-top: 1.5rem;
+}
+
+
+/* Färger för topplistan */
+:root {
+    --lb-border-color: #1c3b6c;
+    --lb-title-background: #f3f5f5;
+    --lb-row-alt-background: #f7f8f8;
+    --lb-text-color: #1a2340;
+}
+
+/* KPI-korten: etikett och värde centrerade.
+   data-testid är Streamlits interna namn och kan ändras i en ny version. */
+[data-testid="stMetricLabel"],
+[data-testid="stMetricValue"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* Hela kortet: ram och rundade hörn */
+.lb-card {
+    border: 1px solid var(--lb-border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    color: var(--lb-text-color);
+    margin-bottom: 3.5rem;
+}
+
+/* Rubriken överst, på grå botten */
+.lb-title {
+    padding: 1rem 1.25rem;
+    background: var(--lb-title-background);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* En rad: placering | namn | värde */
+.lb-row {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr auto;
+    align-items: center;
+    padding: 0.6rem 1.25rem;
+}
+
+/* Varannan rad svagt grå. Rubriken är syskon nummer 1,
+   så odd träffar rad två, fyra och så vidare. */
+.lb-row:nth-child(odd) {
+    background: var(--lb-row-alt-background);
+}
+
+/* Värdet längst till höger */
+.lb-value {
+    text-align: right;
+}
+
+/* Flyttar ner topplistorna */
+.st-key-leaderboards {
+    margin-top: 2.2rem;
+}
+
+/* Flaggan framför namnet */
+.lb-flag {
+    width: 20px;
+    height: auto;
+    margin-right: 0.6rem;
+    vertical-align: middle;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
