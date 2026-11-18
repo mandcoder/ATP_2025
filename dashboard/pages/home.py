@@ -45,7 +45,6 @@ yearly_player_stat = load_yearly_player_stat()
 
 ranking_2025 = load_player_ranking_2025()
 
-
 total_players = len(yearly_player_stat)
 total_matches = len(df)
 
